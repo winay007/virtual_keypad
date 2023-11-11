@@ -58,6 +58,7 @@ show = False
 cv2.namedWindow('video')
 counter = 0
 previousClick = 0
+previousClickShow = 0
 
 keyboard = Controller()
 while True:
@@ -100,6 +101,18 @@ while True:
         showKey.text = "Hide" if show else "Show"
         clickedX, clickedY = 0, 0
 
+    if (showKey.isOver(thumbTipX, thumbTipY)):
+        clickTimeShow = time.time()
+        if clickTimeShow - previousClickShow > 0.5:    
+            show = not show
+            showKey.text = "Hide" if show else "Show"
+            previousClickShow = clickTimeShow
+
+    # if (showKey.isOver(thumbTipX, thumbTipY)):
+    #     show = not show
+    #     showKey.text = "Hide" if show else "Show"
+           
+
     if exitKey.isOver(clickedX, clickedY):
         #break
         exit()
@@ -109,7 +122,7 @@ while True:
     if show:
         textBox.drawKey(frame, (255,255,255), (0,0,0), 0.3)
         for k in keys:
-            if k.isOver(mouseX, mouseY) or k.isOver(signTipX, signTipY):
+            if k.isOver(mousX, mousY) or k.isOver(signTipX, signTipY):
                 alpha = 0.1
                 # writing using mouse right click
                 if k.isOver(clickedX, clickedY):                              
